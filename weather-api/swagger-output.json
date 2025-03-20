@@ -1,0 +1,250 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Weather API",
+    "version": "1.0.0",
+    "description": "API for retrieving and storing weather data"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/weather": {
+      "post": {
+        "summary": "Create new weather data",
+        "description": "Add weather data for a city to the database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "temperature": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "humidity": {
+                    "type": "number"
+                  },
+                  "pressure": {
+                    "type": "number"
+                  },
+                  "windSpeed": {
+                    "type": "number"
+                  },
+                  "windDirection": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Weather data created successfully"
+          },
+          "500": {
+            "description": "Error creating weather data"
+          }
+        }
+      }
+    },
+    "/weather/data/{city}": {
+      "get": {
+        "summary": "Get weather data by city",
+        "description": "Retrieve weather data for a specific city",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "description": "The city name for which you want to fetch the weather data.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved weather data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "city": {
+                        "type": "string"
+                      },
+                      "temperature": {
+                        "type": "number"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "humidity": {
+                        "type": "number"
+                      },
+                      "pressure": {
+                        "type": "number"
+                      },
+                      "windSpeed": {
+                        "type": "number"
+                      },
+                      "windDirection": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No weather data found for the specified city"
+          }
+        }
+      }
+    },
+    "/weather/update/{city}": {
+      "put": {
+        "summary": "Update weather data for a city",
+        "description": "Update existing weather data for a specific city",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "description": "The city name for which you want to update the weather data.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "temperature": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "humidity": {
+                    "type": "number"
+                  },
+                  "pressure": {
+                    "type": "number"
+                  },
+                  "windSpeed": {
+                    "type": "number"
+                  },
+                  "windDirection": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated weather data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    },
+                    "temperature": {
+                      "type": "number"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "humidity": {
+                      "type": "number"
+                    },
+                    "pressure": {
+                      "type": "number"
+                    },
+                    "windSpeed": {
+                      "type": "number"
+                    },
+                    "windDirection": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Weather data not found for the specified city"
+          },
+          "500": {
+            "description": "Error updating weather data"
+          }
+        }
+      }
+    },
+    "/weather/delete/{city}": {
+      "delete": {
+        "summary": "Delete weather data for a city",
+        "description": "Delete the weather data of a specific city",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "description": "The city name for which you want to delete the weather data.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted weather data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No weather data found for the specified city to delete"
+          },
+          "500": {
+            "description": "Error deleting weather data"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}
