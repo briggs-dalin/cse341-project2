@@ -35,7 +35,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'https://cse341-project2-k1u5.onrender.com',
       },
     ],
   },
