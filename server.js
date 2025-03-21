@@ -39,8 +39,9 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/weather.js'], // You can adjust this path as needed
+  apis: ['./routes/weather.js', './routes/location.js']
 };
+
 
 // Initialize Swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
@@ -56,6 +57,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Routes
 const weatherRoutes = require('./routes/weather.js');
 app.use('/weather', weatherRoutes);
+const locationRoutes = require('./routes/location.js');
+app.use('/api/location', locationRoutes);
 
 // Fetch weather data by city or get from database if exists
 app.get('/weather/:city', async (req, res) => {

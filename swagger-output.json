@@ -243,8 +243,184 @@
           }
         }
       }
+    },
+    "/api/location": {
+      "post": {
+        "summary": "Add a new location",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Location"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Location created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to save location"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all locations",
+        "responses": {
+          "200": {
+            "description": "List of all locations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch locations"
+          }
+        }
+      }
+    },
+    "/api/location/{city}": {
+      "get": {
+        "summary": "Get a specific location by city",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Name of the city"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Location details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location not found"
+          },
+          "500": {
+            "description": "Failed to fetch location"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a location by city",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Name of the city"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Location"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Location updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location not found"
+          },
+          "500": {
+            "description": "Failed to update location"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a location by city",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Name of the city"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Location deleted successfully"
+          },
+          "404": {
+            "description": "Location not found"
+          },
+          "500": {
+            "description": "Failed to delete location"
+          }
+        }
+      }
     }
   },
-  "components": {},
+  "components": {
+    "schemas": {
+      "Location": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "The name of the city"
+          },
+          "country": {
+            "type": "string",
+            "description": "The country where the location is"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "The latitude of the location"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "The longitude of the location"
+          }
+        }
+      }
+    }
+  },
   "tags": []
 }
