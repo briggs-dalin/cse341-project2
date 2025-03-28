@@ -39,30 +39,35 @@ passport.deserializeUser(async (id, done) => {
     done(null, user);
 });
 
+console.log('OAUTH_CLIENT_ID:', process.env.OAUTH_CLIENT_ID);
+console.log('OAUTH_CLIENT_SECRET:', process.env.OAUTH_CLIENT_SECRET);
+console.log('OAUTH_CALLBACK_URL:', process.env.OAUTH_CALLBACK_URL);
+
 passport.use(new OAuth2Strategy({
   authorizationURL: 'https://github.com/login/oauth/authorize',
   tokenURL: 'https://github.com/login/oauth/access_token',
-  clientID: process.env.OAUTH_CLIENT_ID,
-  clientSecret: process.env.OAUTH_CLIENT_SECRET,
-  callbackURL: process.env.OAUTH_CALLBACK_URL,
+  clientID: process.env.OAUTH_CLIENT_ID,      // Using the value from .env
+  clientSecret: process.env.OAUTH_CLIENT_SECRET, // Using the value from .env
+  callbackURL: process.env.OAUTH_CALLBACK_URL  // Using the value from .env
 }, async (accessToken, refreshToken, params, done) => {
   try {
-      const response = await axios.get('https://api.github.com/user', {
-          headers: { Authorization: `Bearer ${accessToken}` }
-      });
+    const response = await axios.get('https://api.github.com/user', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
 
-      const profile = response.data;
+    const profile = response.data;
 
-      let user = await User.findOne({ oauthId: profile.id });
-      if (!user) {
-          user = new User({ oauthId: profile.id, username: profile.login });
-          await user.save();
-      }
-      return done(null, user);
+    let user = await User.findOne({ oauthId: profile.id });
+    if (!user) {
+      user = new User({ oauthId: profile.id, username: profile.login });
+      await user.save();
+    }
+    return done(null, user);
   } catch (error) {
-      return done(error, null);
+    return done(error, null);
   }
 }));
+
 
 
 
