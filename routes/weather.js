@@ -3,6 +3,30 @@ const { check, validationResult } = require('express-validator');
 const Weather = require('../models/weather');
 const { ensureAuthenticated } = require('../middleware/auth');
 const router = express.Router();
+const axios = require('axios');
+
+
+router.get('/:city', async (req, res) => {
+    const { city } = req.params;
+    const apiKey = process.env.OPENWEATHER_API_KEY;
+  
+    try {
+      const weatherResponse = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+  
+      // Process the data from OpenWeather
+      const weatherData = weatherResponse.data;
+  
+      if (weatherData.cod === 200) {
+        res.json(weatherData); // Send weather data back to the user
+      } else {
+        res.status(404).json({ error: 'Weather data not found for this city' });
+      }
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      res.status(500).json({ error: 'Error fetching weather data from OpenWeather' });
+    }
+  });
+
 
 /**
  * @swagger
