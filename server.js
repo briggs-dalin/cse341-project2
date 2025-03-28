@@ -15,6 +15,7 @@ const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const User = require('./models/user');
 const Weather = require('./models/weather');
+const User = require('./models/user');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
