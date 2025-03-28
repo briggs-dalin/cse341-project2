@@ -120,7 +120,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 
-const Weather = require('../models/weather');
+
 const router = express.Router();
 const { ensureAuthenticated } = require('./middleware/auth');
 
