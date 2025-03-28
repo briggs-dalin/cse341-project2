@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Location = require('../models/location');
-
+const { ensureAuthenticated } = require('../middleware/auth');
 
 /**
  * @swagger
@@ -24,12 +24,13 @@ const Location = require('../models/location');
  *           description: The longitude of the location
  */
 
-
 /**
  * @swagger
  * /api/location:
  *   post:
  *     summary: Add a new location
+ *     security:
+ *       - OAuth2: []
  *     requestBody:
  *       required: true
  *       content:
@@ -47,8 +48,8 @@ const Location = require('../models/location');
  *         description: Failed to save location
  */
 
-// Add a new location
-router.post('/', async (req, res) => {
+// Add a new location (protected route)
+router.post('/', ensureAuthenticated, async (req, res) => {
     try {
         const { city, country, latitude, longitude } = req.body;
         const newLocation = new Location({ city, country, latitude, longitude });
@@ -64,6 +65,8 @@ router.post('/', async (req, res) => {
  * /api/location:
  *   get:
  *     summary: Get all locations
+ *     security:
+ *       - OAuth2: []
  *     responses:
  *       200:
  *         description: List of all locations
@@ -77,8 +80,8 @@ router.post('/', async (req, res) => {
  *         description: Failed to fetch locations
  */
 
-// Get all locations
-router.get('/', async (req, res) => {
+// Get all locations (protected route)
+router.get('/', ensureAuthenticated, async (req, res) => {
     try {
         const locations = await Location.find();
         res.json(locations);
@@ -99,6 +102,8 @@ router.get('/', async (req, res) => {
  *         schema:
  *           type: string
  *         description: Name of the city
+ *     security:
+ *       - OAuth2: []
  *     responses:
  *       200:
  *         description: Location details
@@ -112,8 +117,8 @@ router.get('/', async (req, res) => {
  *         description: Failed to fetch location
  */
 
-// Get a specific location by city
-router.get('/:city', async (req, res) => {
+// Get a specific location by city (protected route)
+router.get('/:city', ensureAuthenticated, async (req, res) => {
     try {
         const location = await Location.findOne({ city: req.params.city });
         if (!location) {
@@ -137,6 +142,8 @@ router.get('/:city', async (req, res) => {
  *         schema:
  *           type: string
  *         description: Name of the city
+ *     security:
+ *       - OAuth2: []
  *     requestBody:
  *       required: true
  *       content:
@@ -155,7 +162,9 @@ router.get('/:city', async (req, res) => {
  *       500:
  *         description: Failed to update location
  */
-router.put('/:city', async (req, res) => {
+
+// Update a location (protected route)
+router.put('/:city', ensureAuthenticated, async (req, res) => {
     try {
         const updatedLocation = await Location.findOneAndUpdate(
             { city: req.params.city },
@@ -183,6 +192,8 @@ router.put('/:city', async (req, res) => {
  *         schema:
  *           type: string
  *         description: Name of the city
+ *     security:
+ *       - OAuth2: []
  *     responses:
  *       200:
  *         description: Location deleted successfully
@@ -191,7 +202,9 @@ router.put('/:city', async (req, res) => {
  *       500:
  *         description: Failed to delete location
  */
-router.delete('/:city', async (req, res) => {
+
+// Delete a location (protected route)
+router.delete('/:city', ensureAuthenticated, async (req, res) => {
     try {
         const deletedLocation = await Location.findOneAndDelete({ city: req.params.city });
         if (!deletedLocation) {
