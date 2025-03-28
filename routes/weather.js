@@ -85,6 +85,61 @@ router.post(
 
 /**
  * @swagger
+ * /weather:
+ *   get:
+ *     summary: Get all weather data for all cities
+ *     responses:
+ *       200:
+ *         description: List of weather data for all cities
+ *       500:
+ *         description: Error fetching weather data
+ */
+router.get('/', async (req, res) => {
+    try {
+      const allWeatherData = await Weather.find();
+      res.json(allWeatherData);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching weather data' });
+    }
+  });
+
+  /**
+ * @swagger
+ * /weather/{city}:
+ *   get:
+ *     summary: Get weather data for a specific city
+ *     parameters:
+ *       - in: path
+ *         name: city
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The name of the city
+ *     responses:
+ *       200:
+ *         description: Weather data for the specified city
+ *       404:
+ *         description: Weather data not found for this city
+ *       500:
+ *         description: Error fetching weather data
+ */
+router.get('/:city', async (req, res) => {
+    try {
+      const { city } = req.params;
+      const weatherData = await Weather.findOne({ city });
+  
+      if (!weatherData) {
+        return res.status(404).json({ error: 'Weather data not found for this city' });
+      }
+  
+      res.json(weatherData);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching weather data' });
+    }
+  });
+
+/**
+ * @swagger
  * /weather/update/{city}:
  *   put:
  *     summary: Update weather data for a city
