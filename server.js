@@ -119,8 +119,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
-// routes/weather.js (Updated with Auth Middleware)
-const express = require('express');
+
 const Weather = require('../models/weather');
 const router = express.Router();
 const { ensureAuthenticated } = require('./middleware/auth');
