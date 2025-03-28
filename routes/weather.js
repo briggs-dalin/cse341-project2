@@ -5,6 +5,7 @@ const Weather = require('../models/weather');
 const { ensureAuthenticated } = require('../middleware/auth');
 const router = express.Router();
 const apiKey = process.env.API_KEY;
+const city = req.query.city;
 
 
 
