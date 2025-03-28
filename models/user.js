@@ -16,13 +16,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: false, 
     },
-   
+    dateJoined: {
+        type: Date,
+        default: Date.now,
+      },
+  
     },
-    dateJoined, {
-      type: Date,
-      default: Date.now,
-    },
-
+    
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
 
