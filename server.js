@@ -129,7 +129,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 const router = express.Router();
-const { ensureAuthenticated } = require('./middleware/auth');
+
 
 router.post('/', ensureAuthenticated, async (req, res) => {
     try {
