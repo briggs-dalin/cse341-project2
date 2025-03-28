@@ -47,7 +47,7 @@ router.get('/:city', async (req, res) => {
       res.status(500).json({ error: 'Error fetching weather data' });
     }
   });
-  r('Error:', error);
+ 
 
 
 /**
