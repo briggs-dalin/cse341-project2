@@ -6,9 +6,52 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Weather:
+ *       type: object
+ *       properties:
+ *         city:
+ *           type: string
+ *           description: The name of the city
+ *         temperature:
+ *           type: number
+ *           description: The temperature of the city
+ *         description:
+ *           type: string
+ *           description: A brief description of the weather
+ *         humidity:
+ *           type: number
+ *           description: The humidity level in percentage
+ *         pressure:
+ *           type: number
+ *           description: The air pressure
+ *         windSpeed:
+ *           type: number
+ *           description: The speed of the wind
+ *         windDirection:
+ *           type: string
+ *           description: The direction of the wind
+ */
+
+/**
+ * @swagger
  * /weather:
  *   post:
  *     summary: Create new weather data
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Weather'
+ *     responses:
+ *       201:
+ *         description: Weather data created successfully
+ *       400:
+ *         description: Weather data for this city already exists
+ *       500:
+ *         description: Error creating weather data
  */
 router.post(
   '/',
@@ -45,6 +88,26 @@ router.post(
  * /weather/update/{city}:
  *   put:
  *     summary: Update weather data for a city
+ *     parameters:
+ *       - in: path
+ *         name: city
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Name of the city
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Weather'
+ *     responses:
+ *       200:
+ *         description: Weather data updated successfully
+ *       404:
+ *         description: Weather data not found for this city
+ *       500:
+ *         description: Error updating weather data
  */
 router.put('/update/:city', ensureAuthenticated, async (req, res) => {
   try {
@@ -68,6 +131,20 @@ router.put('/update/:city', ensureAuthenticated, async (req, res) => {
  * /weather/delete/{city}:
  *   delete:
  *     summary: Delete weather data for a city
+ *     parameters:
+ *       - in: path
+ *         name: city
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Name of the city
+ *     responses:
+ *       200:
+ *         description: Weather data deleted successfully
+ *       404:
+ *         description: Weather data not found for this city
+ *       500:
+ *         description: Error deleting weather data
  */
 router.delete('/delete/:city', ensureAuthenticated, async (req, res) => {
   try {
