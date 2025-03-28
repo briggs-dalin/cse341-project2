@@ -15,6 +15,7 @@ const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const User = require('./models/user');
 const Weather = require('./models/weather');
+const { ensureAuthenticated } = require('./middleware/auth');
 
 
 const app = express();
