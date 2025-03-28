@@ -16,6 +16,7 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/user');
 const Weather = require('./models/weather');
 const { ensureAuthenticated } = require('./middleware/auth');
+const MongoStore = require('connect-mongo');
 
 
 const app = express();
@@ -32,6 +33,17 @@ app.use(passport.session());
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Connection Error:', err));
+
+  app.use(session({
+    secret: 'your-secret-key', // Use a secure key
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI, 
+      collectionName: 'weather', 
+    }),
+    cookie: { secure: false } 
+  }));
 
 // Passport OAuth2 Strategy
 passport.serializeUser((user, done) => done(null, user.id));
