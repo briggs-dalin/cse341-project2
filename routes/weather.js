@@ -4,32 +4,50 @@ const { check, validationResult } = require('express-validator');
 const Weather = require('../models/weather');
 const { ensureAuthenticated } = require('../middleware/auth');
 const router = express.Router();
-const apiKey = process.env.API_KEY;
-const city = req.query.city;
 
 
 
 
 
 
-fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
-  .then(response => response.json())
-  .then(data => {
-    const formattedData = {
-      city: data.name,
-      temperature: data.main.temp - 273.15, // Convert from Kelvin to Celsius
-      description: data.weather[0].description,
-      humidity: data.main.humidity,
-      pressure: data.main.pressure,
-      windSpeed: data.wind.speed,
-      windDirection: data.wind.deg,
-      timestamp: new Date().toISOString(), // Current timestamp
-      __v: 0
-    };
 
-    console.log(formattedData); 
-  })
-  .catch(error => console.error('Error:', error));
+
+router.get('/:city', async (req, res) => {
+    try {
+      const { city } = req.params; // Get the city from the URL parameter
+      const apiKey = process.env.OPENWEATHER_API_KEY; // Store your OpenWeather API key in .env
+  
+      // Fetch weather data from OpenWeather
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
+      const data = await response.json();
+  
+      // If the fetch was unsuccessful
+      if (data.cod !== 200) {
+        return res.status(404).json({ error: 'City not found or error fetching weather data' });
+      }
+  
+      // Format the data
+      const formattedData = {
+        city: data.name,
+        temperature: data.main.temp - 273.15, // Convert from Kelvin to Celsius
+        description: data.weather[0].description,
+        humidity: data.main.humidity,
+        pressure: data.main.pressure,
+        windSpeed: data.wind.speed,
+        windDirection: data.wind.deg,
+        timestamp: new Date().toISOString(), // Current timestamp
+        __v: 0 // Mongoose versioning field, if needed
+      };
+  
+      // Send the formatted data as a response
+      res.json(formattedData);
+  
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Error fetching weather data' });
+    }
+  });
+  r('Error:', error);
 
 
 /**
