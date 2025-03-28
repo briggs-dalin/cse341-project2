@@ -52,9 +52,6 @@ passport.deserializeUser(async (id, done) => {
     done(null, user);
 });
 
-console.log('OAUTH_CLIENT_ID:', process.env.OAUTH_CLIENT_ID);
-console.log('OAUTH_CLIENT_SECRET:', process.env.OAUTH_CLIENT_SECRET);
-console.log('OAUTH_CALLBACK_URL:', process.env.OAUTH_CALLBACK_URL);
 
 passport.use(new OAuth2Strategy({
   authorizationURL: 'https://github.com/login/oauth/authorize',
@@ -136,8 +133,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
 
 
 const router = express.Router();

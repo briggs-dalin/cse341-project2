@@ -1,13 +1,18 @@
+require(`dotenv`).config();
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const Weather = require('../models/weather');
 const { ensureAuthenticated } = require('../middleware/auth');
 const router = express.Router();
+const apiKey = process.env.API_KEY;
 
 
 
-fetch('YOUR_OPENWEATHER_API_URL')
-  .then(response => response.json()) 
+
+
+
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
+  .then(response => response.json())
   .then(data => {
     const formattedData = {
       city: data.name,
