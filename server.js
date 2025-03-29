@@ -102,6 +102,10 @@ app.get('/logout', (req, res, next) => {
 const weatherRoutes = require('./routes/weather');
 app.use('/weather', weatherRoutes);
 
+//Location Routes
+const locationRoutes = require('./routes/location');
+app.use('/location', locationRoutes);
+
 // Secure Weather Data Route
 app.get('/weather-data', ensureAuthenticated, async (req, res) => {
     try {
