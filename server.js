@@ -104,7 +104,7 @@ app.use('/weather', weatherRoutes);
 
 //Location Routes
 const locationRoutes = require('./routes/location');
-app.use('/location', locationRoutes);
+app.use('api/location', locationRoutes);
 
 // Secure Weather Data Route
 app.get('/weather-data', ensureAuthenticated, async (req, res) => {
